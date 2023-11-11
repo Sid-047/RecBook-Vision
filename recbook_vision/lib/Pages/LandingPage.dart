@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rec_book/Pages/FaceSignUpPage.dart';
+import 'package:recbook_vision/Pages/FaceSignUpPage.dart';
 
 class LandingPage extends StatelessWidget{
   @override

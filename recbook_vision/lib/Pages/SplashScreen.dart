@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:rec_book/Pages/LandingPage.dart';
+import 'package:recbook_vision/Pages/LandingPage.dart';
 
 class SplashScreen extends StatefulWidget{
     @override

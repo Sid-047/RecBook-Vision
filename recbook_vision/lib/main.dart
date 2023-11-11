@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rec_book/Pages/SplashScreen.dart';
+import 'package:recbook_vision/Pages/SplashScreen.dart';
 
 void main(){
   runApp(MyApp());
