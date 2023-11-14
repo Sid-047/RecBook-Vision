@@ -1,8 +1,8 @@
 import 'dart:io';
-
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:google_mlkit_commons/google_mlkit_commons.dart';
 
 class CameraView extends StatefulWidget {
@@ -100,6 +100,42 @@ class _CameraViewState extends State<CameraView> {
       ),
     );
   }
+
+Widget _takePictureButton() => Positioned(
+  bottom: 8,
+  child: SizedBox(
+    height: 50.0,
+    width: 50.0,
+    child: FloatingActionButton(
+      heroTag: Object(),
+      onPressed: _takePicture,
+      backgroundColor: Colors.blue, 
+      child: Icon(
+        Icons.camera_alt,
+        size: 25,
+      ),
+    ),
+  ),
+);
+
+void _takePicture() async {
+  try {
+    if (_controller != null && _controller!.value.isInitialized) {
+      final Directory appDirectory = await getTemporaryDirectory();
+      final String filePath = '${appDirectory.path}/SignUpFace.jpg';
+      if (!_controller!.value.isTakingPicture) {
+        await _controller!.takePicture();
+        print('Picture taken! Image saved at: $filePath');
+      } else {
+        print('Error: Camera is already capturing a picture.');
+      }
+    } else {
+      print('Error: Camera not initialized.');
+    }
+  } catch (e) {
+    print('Error taking picture: $e');
+  }
+}
 
   Widget _backButton() => Positioned(
         top: 40,

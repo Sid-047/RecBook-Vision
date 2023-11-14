@@ -45,13 +45,22 @@ class _DetectorViewState extends State<DetectorView> {
 
   @override
   Widget build(BuildContext context) {
-    return CameraView(
-      customPaint: widget.customPaint,
-      onImage: widget.onImage,
-      onCameraFeedReady: widget.onCameraFeedReady,
-      onDetectorViewModeChanged: _onDetectorViewModeChanged,
-      initialCameraLensDirection: widget.initialCameraLensDirection,
-      onCameraLensDirectionChanged: widget.onCameraLensDirectionChanged,
+    return Column(
+      children: [
+        Expanded(
+          child: CameraView(
+            customPaint: widget.customPaint,
+            onImage: widget.onImage,
+            onCameraFeedReady: widget.onCameraFeedReady,
+            onDetectorViewModeChanged: _onDetectorViewModeChanged,
+            initialCameraLensDirection: widget.initialCameraLensDirection,
+            onCameraLensDirectionChanged: widget.onCameraLensDirectionChanged,
+          ),
+        ),
+        _mode == DetectorViewMode.liveFeed
+            ? _takePictureButton()
+            : SizedBox(), // Show the button only in live feed mode
+      ],
     );
   }
 
@@ -62,4 +71,23 @@ class _DetectorViewState extends State<DetectorView> {
     }
     setState(() {});
   }
+
+  Widget _takePictureButton() => Positioned(
+        bottom: 8,
+        child: SizedBox(
+          height: 50.0,
+          width: 50.0,
+          child: FloatingActionButton(
+            heroTag: Object(),
+            onPressed: () {
+              // _controller?.takePicture().then((XFile file) => print(file.path));
+            },
+            backgroundColor: Colors.blue,
+            child: Icon(
+              Icons.camera_alt,
+              size: 25,
+            ),
+          ),
+        ),
+      );
 }
