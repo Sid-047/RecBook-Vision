@@ -36,18 +36,20 @@ class DetectorView extends StatefulWidget {
 
 class _DetectorViewState extends State<DetectorView> {
   late DetectorViewMode _mode;
+  late String distanceStatus;
 
   @override
   void initState() {
     _mode = widget.initialDetectionMode;
+    distanceStatus = "Too Near";
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return Stack(
       children: [
-        Expanded(
+        Positioned.fill(
           child: CameraView(
             customPaint: widget.customPaint,
             onImage: widget.onImage,
@@ -57,10 +59,56 @@ class _DetectorViewState extends State<DetectorView> {
             onCameraLensDirectionChanged: widget.onCameraLensDirectionChanged,
           ),
         ),
-        _mode == DetectorViewMode.liveFeed
-            ? _takePictureButton()
-            : SizedBox(), // Show the button only in live feed mode
+        Positioned(
+          top: 25,
+          left: 0,
+          right: 0,
+          child: _distanceWidget(),
+        ),
+        _takePictureButton(), // Added the takePictureButton
       ],
+    );
+  }
+
+  Widget _distanceWidget() {
+    String message;
+    Color textColor;
+    Gradient gradient;
+
+    switch (distanceStatus) {
+      case "Too far":
+        message = "Too far";
+        break;
+      case "Face not Found":
+        message = "Face not Found";
+        break;
+      case "Too Near":
+        message = "Too Near";
+        break;
+      case "Alright Perfect":
+        message = "Alright Perfect";
+        break;
+      default:
+        message = "Unknown Status";
+    }
+
+    return Container(
+      padding: EdgeInsets.all(26.0),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: [
+            Colors.white.withOpacity(0.6),
+            Colors.black.withOpacity(0.6),
+          ],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: Text(
+        message,
+        style: TextStyle(fontSize: 32, fontFamily: 'Roboto', fontWeight: FontWeight.bold, color: Colors.white),
+        textAlign: TextAlign.center,
+      ),
     );
   }
 
@@ -82,10 +130,11 @@ class _DetectorViewState extends State<DetectorView> {
             onPressed: () {
               // _controller?.takePicture().then((XFile file) => print(file.path));
             },
-            backgroundColor: Colors.blue,
+            backgroundColor: Colors.black,
             child: Icon(
               Icons.camera_alt,
               size: 25,
+              color: Colors.white,
             ),
           ),
         ),
